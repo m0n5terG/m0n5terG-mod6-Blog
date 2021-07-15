@@ -13,8 +13,10 @@ export default function SignInSignUpScreen({ navigation }) {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [errorText, setErrorText] = useState('')
+  const [isLogin, setIsLogin] = useState(true)
 
   async function login() {
     console.log("---- Login time ----");
@@ -27,7 +29,6 @@ export default function SignInSignUpScreen({ navigation }) {
         password,
       });
       console.log("Success logging in!");
-      // console.log(response);
       await AsyncStorage.setItem("token", response.data.access_token);
       setLoading(false);
       setUsername("");
@@ -44,18 +45,49 @@ export default function SignInSignUpScreen({ navigation }) {
     }
   }
 
+  async function signUp() {
+    if (password != confirmPassword) {
+      setErrorText("Your passwords don't match. Check and try again.")
+    } else {
+      try {
+        setLoading(true);
+        const response = await axios.post(API + API_SIGNUP, {
+          username,
+          password,
+        });
+        if (response.data.Error) {
+          
+          setErrorText(response.data.Error);
+          setLoading(false);
+        } else {
+          console.log("Success signing up!");
+          setLoading(false);
+          login();
+        }
+      } catch (error) {
+        setLoading(false);
+        console.log("Error logging in!");
+        console.log(error.response);
+        setErrorText(error.response.data.description);
+        if (error.response.status = 404) {
+          setErrorText("User does not exist")
+        }
+      }
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        Log In
+        {isLogin ? "Log In" : "Sign Up"}
       </Text>
       <View style={styles.inputView}>
         <TextInput
           style={styles.textInput}
           placeholder="Username:"
           placeholderTextColor="#003f5c"
-          value={username}
           onChangeText={(username) => setUsername(username)}
+          value={username}
         />
       </View>
   
@@ -65,15 +97,28 @@ export default function SignInSignUpScreen({ navigation }) {
           placeholder="Password:"
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
-          value={password}
           onChangeText={(pw) => setPassword(pw)}
+          value={password}
         />
       </View>
+
+      {isLogin ? <View/> :
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Confirm Password:"
+            placeholderTextColor="#003f5c"
+            secureTextEntry={true}
+            onChangeText={(pw) => setConfirmPassword(pw)}
+            value={confirmPassword}
+          />
+        </View>}
+
       <View/>
       <View>
         <View style={{flexDirection: "row"}}>
-          <TouchableOpacity style={styles.button} onPress={login}>
-            <Text style={styles.buttonText}> Log In </Text>
+          <TouchableOpacity style={styles.button} onPress={ isLogin ? login : signUp}>
+            <Text style={styles.buttonText}> {isLogin ? "Log In" : "Sign Up"} </Text>
           </TouchableOpacity>
           {loading ? <ActivityIndicator style={{ marginLeft: 10 }}/> : <View/>}
         </View>
@@ -81,9 +126,22 @@ export default function SignInSignUpScreen({ navigation }) {
       <Text style={styles.errorText}>
         {errorText}
       </Text>
+      <TouchableOpacity
+        onPress={() => {
+          LayoutAnimation.configureNext({
+            duration: 700,
+            create: { type: 'linear', property: 'opacity' },
+            update: { type: 'spring', springDamping: 0.4 }
+          });
+          setIsLogin(!isLogin);
+          setErrorText("");
+        }}>
+          <Text style={styles.switchText}> {isLogin ? "No account? Sign up now." : "Already have an account? Log in here."}</Text>
+      </TouchableOpacity>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
