@@ -9,6 +9,7 @@ import { lightStyles } from "../styles/commonStyles";
 export default function IndexScreen({ navigation, route }) {
 
   const [posts, setPosts] = useState([]);
+  
   const styles = lightStyles;
 
   // This is to set up the top right button
@@ -16,7 +17,7 @@ export default function IndexScreen({ navigation, route }) {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPress={addPost}>
-          <FontAwesome name="plus" size={24} style={{ color: styles.headerTint, marginRight: 15 }} />
+          <FontAwesome name="plus-square-o" size={24} style={{ color: styles.headerTint, marginRight: 15 }} />
         </TouchableOpacity>
       ),
     });
@@ -24,6 +25,18 @@ export default function IndexScreen({ navigation, route }) {
 
   useEffect(() => {
     getPosts();
+  }, []);
+
+  useEffect(() => {
+    console.log("Setting up nav listener");
+    const removeListener = navigation.addListener("focus", () => {
+      console.log("Running nav listener");
+      getPosts();
+    });
+
+    getPosts();
+
+    return removeListener;
   }, []);
 
   async function getPosts() {
@@ -44,11 +57,25 @@ export default function IndexScreen({ navigation, route }) {
   }
 
   function addPost() {
-    
+    navigation.navigate("Add")
   }
 
-  function deletePost() {
-    
+  async function deletePost(id) {
+    console.log("Deleting " + id);
+
+    const token = await AsyncStorage.getItem("token");
+
+    try {
+      
+      const response = await axios.delete(API + API_POSTS + `/${id}`, { 
+        headers: { Authorization: `JWT ${token}` }, });
+
+      console.log(response)
+      setPosts(posts.filter((item) => item.id !== id));
+      //navigation.navigate('Index');
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   // The function to render each row in our FlatList

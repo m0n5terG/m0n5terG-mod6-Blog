@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AccountStack from '../components/AccountStack';
 import BlogStack from './BlogStack';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,11 +15,11 @@ export default function LoggedInStack() {
                     let iconName;
 
                     if (route.name === 'Blog') {
-                        iconName = "blogger"
-                    } else if (route.name === 'Settings') {
-                        iconName = "account-cog"
+                        iconName = "blog"
+                    } else if (route.name === 'Setting') {
+                        iconName = "house-user"
                     }
-                    return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+                    return <FontAwesome5 name={iconName} size={size} color={color} />;
                 }
             })}
             tabBarOptions={{
