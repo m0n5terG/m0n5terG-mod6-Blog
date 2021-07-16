@@ -4,7 +4,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { FAB } from 'react-native-paper';
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API, API_POSTS } from "../constants/API";
+import { API, API_POSTS, } from "../constants/API";
 import { lightStyles } from "../styles/commonStyles";
 
 export default function IndexScreen({ navigation, route }) {
@@ -19,15 +19,11 @@ export default function IndexScreen({ navigation, route }) {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPress={addPost}>
-          <FontAwesome name="plus-square-o" size={24} style={{ color: styles.headerTint, marginRight: 15 }} />
+          <FontAwesome name="plus-square-o" size={30} style={{ color: styles.headerTint, marginRight: 15 }} />
         </TouchableOpacity>
       ),
     });
   });
-
-  useEffect(() => {
-    getPosts();
-  }, []);
 
   useEffect(() => {
     console.log("Setting up nav listener");
@@ -62,9 +58,9 @@ export default function IndexScreen({ navigation, route }) {
   }
 
   async function deletePost(id) {
-    console.log("Deleting " + id);
-
+    
     const token = await AsyncStorage.getItem("token");
+    console.log("Deleting " + id);
 
     try {
       
@@ -73,7 +69,7 @@ export default function IndexScreen({ navigation, route }) {
 
       console.log(response)
       setPosts(posts.filter((item) => item.id !== id));
-      //navigation.navigate('Index');
+      navigation.navigate('Index');
     } catch (error) {
       console.log(error)
     }
@@ -90,7 +86,7 @@ export default function IndexScreen({ navigation, route }) {
   // The function to render each row in our FlatList
   function renderItem({ item }) {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("Details", {post: item})}>
+      <TouchableOpacity onPress={() => navigation.navigate("Details", {id: item.id})}>
         <View
           style={{
             padding: 10,
@@ -137,7 +133,8 @@ export default function IndexScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   fab: {
     height: 50,
