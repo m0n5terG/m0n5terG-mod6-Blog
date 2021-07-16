@@ -21,7 +21,6 @@ export default function SignInSignUpScreen({ navigation }) {
   async function login() {
     console.log("---- Login time ----");
     Keyboard.dismiss();
-
     try {
       setLoading(true);
       const response = await axios.post(API + API_LOGIN, {
@@ -29,22 +28,19 @@ export default function SignInSignUpScreen({ navigation }) {
         password,
       });
       console.log("Success logging in!");
+      console.log(response);
+      
       await AsyncStorage.setItem("token", response.data.access_token);
       setLoading(false);
-      setUsername("");
-      setPassword("");
       navigation.navigate("Logged In");
     } catch (error) {
       setLoading(false);
       console.log("Error logging in!");
       console.log(error);
       setErrorText(error.response.data.description);
-      if (error.response.status = 404) {
-        setErrorText("User does not exist")
-      }
     }
   }
-
+  
   async function signUp() {
     if (password != confirmPassword) {
       setErrorText("Your passwords don't match. Check and try again.")
@@ -56,7 +52,7 @@ export default function SignInSignUpScreen({ navigation }) {
           password,
         });
         if (response.data.Error) {
-          
+          // We have an error message for if the user already exists
           setErrorText(response.data.Error);
           setLoading(false);
         } else {
@@ -69,9 +65,6 @@ export default function SignInSignUpScreen({ navigation }) {
         console.log("Error logging in!");
         console.log(error.response);
         setErrorText(error.response.data.description);
-        if (error.response.status = 404) {
-          setErrorText("User does not exist")
-        }
       }
     }
   }
