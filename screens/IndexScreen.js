@@ -9,6 +9,7 @@ import { lightStyles } from "../styles/commonStyles";
 export default function IndexScreen({ navigation, route }) {
 
   const [posts, setPosts] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   
   const styles = lightStyles;
 
@@ -29,13 +30,12 @@ export default function IndexScreen({ navigation, route }) {
 
   useEffect(() => {
     console.log("Setting up nav listener");
+    // Check for when we come back to this screen
     const removeListener = navigation.addListener("focus", () => {
       console.log("Running nav listener");
       getPosts();
     });
-
     getPosts();
-
     return removeListener;
   }, []);
 
@@ -78,6 +78,14 @@ export default function IndexScreen({ navigation, route }) {
     }
   }
 
+  async function onRefresh() {
+    setRefreshing(true);
+    const response = await getPosts()
+    console.log(response.data);
+    setRefreshing(false);
+  }
+
+
   // The function to render each row in our FlatList
   function renderItem({ item }) {
     return (
@@ -108,6 +116,12 @@ export default function IndexScreen({ navigation, route }) {
         renderItem={renderItem}
         style={{ width: "100%" }}
         keyExtractor={(item) => item.id.toString()}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
       />
     </View>
   );
