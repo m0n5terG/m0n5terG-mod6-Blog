@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TouchableOpacity, FlatList, RefreshControl} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, RefreshControl} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { FAB } from 'react-native-paper';
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API, API_POSTS } from "../constants/API";
@@ -123,7 +124,28 @@ export default function IndexScreen({ navigation, route }) {
           />
         }
       />
+      {/*<FAB
+        style={styles.fab}
+        small
+        icon="plus"
+        onPress={() => navigation.navigate("Post")} 
+      />*/}
     </View>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  fab: {
+    height: 50,
+    width: 50,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 50,
+    right: 30
+  },
+})  
