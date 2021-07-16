@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ActivityIndicator, TouchableOpacity, Text, View, Switch, Animated, TouchableWithoutFeedback } from "react-native";
 import { commonStyles, lightStyles } from "../styles/commonStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from "axios";
 import { API, API_WHOAMI } from "../constants/API";
 
@@ -10,7 +11,17 @@ export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState(null);
 
   const styles = { ...commonStyles, ...lightStyles };
-
+/*
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={navigation.navigate("Camera")}>
+          <MaterialCommunityIcons name="camera-wireless-outline" size={24} style={{ color: styles.headerTint, marginRight: 15 }} />
+        </TouchableOpacity>
+      ),
+    });
+  });
+*/
   async function getUsername() {
     console.log("---- Getting user name ----");
     const token = await AsyncStorage.getItem("token");
