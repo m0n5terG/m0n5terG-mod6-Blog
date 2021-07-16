@@ -69,7 +69,7 @@ export default function IndexScreen({ navigation, route }) {
 
       console.log(response)
       setPosts(posts.filter((item) => item.id !== id));
-      navigation.navigate('Index');
+     
     } catch (error) {
       console.log(error)
     }
@@ -98,7 +98,7 @@ export default function IndexScreen({ navigation, route }) {
             justifyContent: "space-between",
           }}>
           <Text style={styles.text}>{item.title}</Text>
-          <TouchableOpacity onPress={deletePost}>
+          <TouchableOpacity onPress={() => deletePost(item.id)}>
             <FontAwesome name="trash" size={20} color="#a80000" />
           </TouchableOpacity>
         </View>
