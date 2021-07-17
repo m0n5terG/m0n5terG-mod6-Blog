@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import { FontAwesome } from '@expo/vector-icons';
-import { darkStyles, lightStyles } from '../styles/commonStyles';
+import { darkStyles, lightStyles, commonStyles } from '../styles/commonStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadPicAction } from '../redux/ducks/accountPref';
 
@@ -51,20 +51,20 @@ export default function CameraScreen({ navigation }) {
   }, [])
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.container}>
       <Camera style={additionalStyles.camera}
         type={back ? Camera.Constants.Type.back : Camera.Constants.Type.front} ref={cameraRef}>
         <View style={additionalStyles.innerView}>
           <View style={additionalStyles.buttonView}>
             <TouchableOpacity onPress={takePicture}
-              style={[additionalStyles.circleButton, { backgroundColor: isDark ? "black" : "white" }]} />
+              style={[additionalStyles.circleButton, { backgroundColor: isDark ? "black" : "white" }]}>
+            </TouchableOpacity>
           </View>
         </View>
       </Camera>
     </View>
   )
 }
-
 
   const additionalStyles = StyleSheet.create({
     camera: {

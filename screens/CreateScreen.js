@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import axios from "axios";
 import { API, API_CREATE } from "../constants/API";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { lightStyles, commonStyles, darkStyles } from "../styles/commonStyles";
 import { useSelector } from "react-redux";
 
 export default function CreateScreen({ navigation }) {
 
-  const token = useSelector((state) => state.auth);
+  const token = useSelector((state) => state.auth.token);
   const isDark = useSelector((state) => state.accountPref.isDark);
 
   const [title, setTitle] = useState("");
@@ -28,8 +27,7 @@ export default function CreateScreen({ navigation }) {
       setErrorText("Input cannot be blank");
     }
     else {
-      console.log(token);
-      //const token = await AsyncStorage.getItem("token");
+    //  const token = await AsyncStorage.getItem("token");
         try {
           const response = await axios.post(API + API_CREATE, post,
             {

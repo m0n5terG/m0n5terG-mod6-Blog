@@ -17,12 +17,12 @@ export default function BlogStack() {
   const headerOptions = {
     headerStyle: styles.header,
     headerTitleStyle: styles.headerTitle,
-    headerTintColor: styles.headerTint
+    headerTintColor: styles.headerTint,
   }
 
   return (
     <InnerStack.Navigator mode='modal'>
-      <InnerStack.Screen name="Index" component={IndexScreen} options={{ title: "Blog", ...headerOptions, }} />
+      <InnerStack.Screen name="Index" component={IndexScreen} options={{ title: "Blog", ...headerOptions, headerLeft: null }} />
       <InnerStack.Screen name="Add" component={CreateScreen} options={{ title: "Add Post", ...headerOptions }} />
       <InnerStack.Screen name="Details" component={ShowScreen} options={headerOptions} />
       <InnerStack.Screen name="Edit" component={EditScreen} options={{ title: "Edit Post", ...headerOptions }} />
