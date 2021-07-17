@@ -3,10 +3,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AccountStack from '../components/AccountStack';
 import BlogStack from './BlogStack';
 import { FontAwesome5 } from '@expo/vector-icons';
+//import { lightStyles, darkStyles } from '../styles/commonStyles';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
 export default function LoggedInStack() {
+
+    const isDark = useSelector((state) => state.accountPref.isDark);
+    //const styles = isDark ? darkStyles : lightStyles;
 
     return (
         <Tab.Navigator
@@ -23,9 +28,11 @@ export default function LoggedInStack() {
                 }
             })}
             tabBarOptions={{
-                activeTintColor: 'tomato',
-                inactiveTintColor: 'gray',
-                style: { backgroundColor: "white" }
+              activeTintColor: 'tomato',
+              inactiveTintColor: 'gray',
+              style: {
+                backgroundColor: isDark ? "#181818" : "white",
+              }
             }}>
               <Tab.Screen name='Blog' component={BlogStack} />
               <Tab.Screen name='Setting' component={AccountStack} />

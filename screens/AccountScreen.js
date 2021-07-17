@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, TouchableOpacity, Text, View, Switch, Animated, TouchableWithoutFeedback } from "react-native";
-import { commonStyles, lightStyles } from "../styles/commonStyles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ActivityIndicator, TouchableOpacity, Text, View, Switch, Image } from "react-native";
+import { commonStyles, lightStyles, darkStyles } from "../styles/commonStyles";
 import axios from "axios";
 import { API, API_WHOAMI } from "../constants/API";
+import { logOutAction } from "../redux/ducks/blogAuth";
+import { changeModeAction } from '../redux/ducks/accountPref';
+import { useDispatch, useSelector } from "react-redux";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function AccountScreen({ navigation }) {
 
   const [username, setUsername] = useState(null);
+  
+  const token = useSelector((state) => state.auth.token);
+  const isDark = useSelector((state) => state.accountPref.isDark);
+  const dispatch = useDispatch();
 
-  const styles = { ...commonStyles, ...lightStyles };
-/*
+  const styles = { ...commonStyles, ...isDark ? darkStyles : lightStyles };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -19,17 +25,14 @@ export default function AccountScreen({ navigation }) {
           <MaterialCommunityIcons name="camera-wireless-outline" size={24} style={{ color: styles.headerTint, marginRight: 15 }} />
         </TouchableOpacity>
       ),
-      headerLeft: () => {
-        <TouchableOpacity onPress={addPost}>
-          <FontAwesome name="plus-square-o" size={30} style={{ color: styles.headerTint, marginRight: 15 }} />
-        </TouchableOpacity>
-      }
+     
     });
   });
-*/
+
+
   async function getUsername() {
     console.log("---- Getting user name ----");
-    const token = await AsyncStorage.getItem("token");
+  //  const token = await AsyncStorage.getItem("token");
     console.log(`Token is ${token}`);
     try {
       const response = await axios.get(API + API_WHOAMI, {
@@ -53,8 +56,13 @@ export default function AccountScreen({ navigation }) {
   }
 
   function signOut() {
-    AsyncStorage.removeItem("token");
+    dispatch(logOutAction())
     navigation.navigate("SignInSignUp");
+  }
+
+  function switchMode() {
+    dispatch(changeModeAction())
+    console.log(isDark)
   }
 
   useEffect(() => {
@@ -75,8 +83,24 @@ export default function AccountScreen({ navigation }) {
         Account Screen
       </Text>
       <Text>
-        {username}
+        Welcome {username}
       </Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
+        <Text style={{ marginTop: 10, fontSize: 20, color: "#0000EE" }}> 
+          No profile picture. Click to take one. 
+        </Text>
+      </TouchableOpacity>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", margin: 20}}>
+        <Text style={[styles.content, styles.text]}> Dark Mode? </Text>
+        <Switch
+          value={isDark}
+          onChange={switchMode}/>
+      </View>
+      <TouchableOpacity style={[styles.button]} onPress={signOut}>
+        <Text style={styles.buttonText}>
+          Sign Out
+        </Text>
+        </TouchableOpacity>
     </View>
   );
 }

@@ -5,14 +5,18 @@ import { FAB } from 'react-native-paper';
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API, API_POSTS, } from "../constants/API";
-import { lightStyles } from "../styles/commonStyles";
+import { commonStyles, lightStyles, darkStyles } from "../styles/commonStyles";
+import { useSelector } from "react-redux";
 
 export default function IndexScreen({ navigation, route }) {
 
   const [posts, setPosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  const isDark = useSelector((state) => state.accountPref.isDark);
+  const token = useSelector((state) => state.auth.token);
   
-  const styles = lightStyles;
+  const styles = { ...commonStyles, ...isDark ? darkStyles : lightStyles };
 
   // This is to set up the top right button
   useEffect(() => {
@@ -37,7 +41,8 @@ export default function IndexScreen({ navigation, route }) {
   }, []);
 
   async function getPosts() {
-    const token = await AsyncStorage.getItem("token");
+    //const token = await AsyncStorage.getItem("token");
+    console.log(`Token is ${token}`);
     try {
       const response = await axios.get(API + API_POSTS, {
         headers: { Authorization: `JWT ${token}` },
@@ -59,7 +64,7 @@ export default function IndexScreen({ navigation, route }) {
 
   async function deletePost(id) {
     
-    const token = await AsyncStorage.getItem("token");
+    //const token = await AsyncStorage.getItem("token");
     console.log("Deleting " + id);
 
     try {
@@ -130,12 +135,8 @@ export default function IndexScreen({ navigation, route }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
+/*const styles = StyleSheet.create({
+ 
   fab: {
     height: 50,
     width: 50,
@@ -145,4 +146,4 @@ const styles = StyleSheet.create({
     bottom: 50,
     right: 30
   },
-})  
+})  */

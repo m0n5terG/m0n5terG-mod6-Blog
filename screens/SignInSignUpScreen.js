@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, UIManager, LayoutAnimation, ActivityIndicator, Keyboard } from 'react-native';
 import { API, API_LOGIN, API_SIGNUP } from '../constants/API';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { logInAction } from '../redux/ducks/blogAuth';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -18,9 +20,12 @@ export default function SignInSignUpScreen({ navigation }) {
   const [errorText, setErrorText] = useState('')
   const [isLogin, setIsLogin] = useState(true)
 
+  const dispatch = useDispatch()
+
   async function login() {
     console.log("---- Login time ----");
     Keyboard.dismiss();
+    
     try {
       setLoading(true);
       const response = await axios.post(API + API_LOGIN, {
@@ -28,10 +33,13 @@ export default function SignInSignUpScreen({ navigation }) {
         password,
       });
       console.log("Success logging in!");
-      console.log(response);
+      console.log(response.data.access_token);
+
+      dispatch({...logInAction(), payload: response.data.access_token})
       
-      await AsyncStorage.setItem("token", response.data.access_token);
       setLoading(false);
+      setUsername("")
+      setPassword("")
       navigation.navigate("Logged In");
     } catch (error) {
       setLoading(false);
@@ -65,6 +73,9 @@ export default function SignInSignUpScreen({ navigation }) {
         console.log("Error logging in!");
         console.log(error.response);
         setErrorText(error.response.data.description);
+        if (error.response.status = 404) {
+          setErrorText("No such User!")
+        }
       }
     }
   }
