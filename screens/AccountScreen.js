@@ -19,6 +19,11 @@ export default function AccountScreen({ navigation }) {
           <MaterialCommunityIcons name="camera-wireless-outline" size={24} style={{ color: styles.headerTint, marginRight: 15 }} />
         </TouchableOpacity>
       ),
+      headerLeft: () => {
+        <TouchableOpacity onPress={addPost}>
+          <FontAwesome name="plus-square-o" size={30} style={{ color: styles.headerTint, marginRight: 15 }} />
+        </TouchableOpacity>
+      }
     });
   });
 */

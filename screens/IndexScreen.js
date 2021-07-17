@@ -22,11 +22,6 @@ export default function IndexScreen({ navigation, route }) {
           <FontAwesome name="plus-square-o" size={30} style={{ color: styles.headerTint, marginRight: 15 }} />
         </TouchableOpacity>
       ),
-      headerLeft: () => {
-        <TouchableOpacity onPress={addPost}>
-          <FontAwesome name="plus-square-o" size={30} style={{ color: styles.headerTint, marginRight: 15 }} />
-        </TouchableOpacity>
-      }
     });
   });
 
