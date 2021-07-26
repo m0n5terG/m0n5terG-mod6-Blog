@@ -125,25 +125,13 @@ export default function IndexScreen({ navigation, route }) {
           />
         }
       />
-      {/*<FAB
+      <FAB
         style={styles.fab}
         small
         icon="plus"
-        onPress={() => navigation.navigate("Post")} 
-      />*/}
+        onPress={addPost} 
+      />
     </View>
   );
 }
 
-/*const styles = StyleSheet.create({
- 
-  fab: {
-    height: 50,
-    width: 50,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    bottom: 50,
-    right: 30
-  },
-})  */

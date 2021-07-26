@@ -20,6 +20,15 @@ export const commonStyles = {
     fontWeight: '400',
     fontSize: 24,
   },
+  fab: {
+    height: 50,
+    width: 50,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 50,
+    right: 30
+  },
 }
 
 export const lightStyles = {
