@@ -23,7 +23,9 @@ export default function IndexScreen({ navigation, route }) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Avatar.Image size={30} source={{ uri: profilePicture?.uri }} style={{ color: styles.headerTint, marginRight: 15 }} />
+        <TouchableOpacity onPress={() => navigation.navigate("Account")}>
+          <Avatar.Image size={30} source={{ uri: profilePicture?.uri }} style={{ color: styles.headerTint, marginRight: 15 }} />
+        </TouchableOpacity>
       ),
     });
   });
