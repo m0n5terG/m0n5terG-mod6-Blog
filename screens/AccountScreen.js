@@ -90,7 +90,7 @@ export default function AccountScreen({ navigation }) {
     // Check for when we come back to this screen
     const removeListener = navigation.addListener("focus", () => {
       console.log("Running nav listener");
-      setUsername(<ActivityIndicator />);
+      setUsername(<ActivityIndicator color="#0000ff" />);
       getUsername();
     });
     getUsername();

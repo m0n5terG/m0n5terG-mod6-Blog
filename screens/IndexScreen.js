@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, RefreshControl} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { FAB } from 'react-native-paper';
+import { FAB, Avatar } from 'react-native-paper';
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API, API_POSTS, } from "../constants/API";
@@ -15,6 +15,7 @@ export default function IndexScreen({ navigation, route }) {
 
   const isDark = useSelector((state) => state.accountPref.isDark);
   const token = useSelector((state) => state.auth.token);
+  const profilePicture = useSelector((state) => state.accountPref.profilePicture);
   
   const styles = { ...commonStyles, ...isDark ? darkStyles : lightStyles };
 
@@ -22,9 +23,7 @@ export default function IndexScreen({ navigation, route }) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={addPost}>
-          <FontAwesome name="plus-square-o" size={30} style={{ color: styles.headerTint, marginRight: 15 }} />
-        </TouchableOpacity>
+        <Avatar.Image size={30} source={{ uri: profilePicture?.uri }} style={{ color: styles.headerTint, marginRight: 15 }} />
       ),
     });
   });

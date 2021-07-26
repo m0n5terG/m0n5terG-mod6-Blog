@@ -124,7 +124,7 @@ export default function SignInSignUpScreen({ navigation }) {
           <TouchableOpacity style={styles.button} onPress={ isLogin ? login : signUp}>
             <Text style={styles.buttonText}> {isLogin ? "Log In" : "Sign Up"} </Text>
           </TouchableOpacity>
-          {loading ? <ActivityIndicator style={{ marginLeft: 10 }}/> : <View/>}
+          {loading ? <ActivityIndicator color="#0000ff" style={{ marginLeft: 10 }}/> : <View/>}
         </View>
       </View>
       <Text style={styles.errorText}>
